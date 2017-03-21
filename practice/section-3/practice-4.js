@@ -1,5 +1,55 @@
 'use strict';
 
 function createUpdatedCollection(collectionA, objectB) {
-  return '实现练习要求，并改写该行代码。';
+  let result = constructResultArr(collectionA)
+  return result.map(v => {
+    if (myIncludes(objectB.value, v.key)) {
+      return {
+        'key': v.key,
+        'count': v.count - parseInt(v.count / 3)
+      }
+    } else {
+      return {
+        'key': v.key,
+        'count': v.count
+      }
+    }
+  })
+}
+
+
+function constructResultArr(array) {
+  let result = []
+  for (let i = 0; i < array.length; i++) {
+    if (!myIncludes(array[i], '-')) {
+      let findResult = findObject(result, array[i])
+      if (findResult == null) {
+        result.push({ 'key': array[i], 'count': 1 })
+      } else {
+        findResult.count++
+      }
+    } else {
+      result.push({ 'key': array[i][0], 'count': parseInt(array[i][2]) })
+    }
+  }
+  return result
+}
+
+
+function myIncludes(array, value) {
+  for (let i = 0; i < array.length; i++) {
+    if (array[i] === value) {
+      return true
+    }
+  }
+  return false
+}
+
+function findObject(array, key) {
+  for (let obj of array) {
+    if (obj.key === key) {
+      return obj
+    }
+  }
+  return null
 }
