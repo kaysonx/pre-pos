@@ -21,15 +21,13 @@ function createUpdatedCollection(collectionA, objectB) {
 function constructResultArr(array) {
   let result = []
   for (let i = 0; i < array.length; i++) {
-    if (!myIncludes(array[i], '-')) {
-      let findResult = findObject(result, array[i])
-      if (findResult == null) {
-        result.push({ 'key': array[i], 'count': 1 })
-      } else {
-        findResult.count++
-      }
+    let key = array[i][0]
+    let findResult = findObject(result, key)
+    let findNumber = getNum(array[i])
+    if (findResult == null) {
+      result.push({ 'key': key, 'count': findNumber })
     } else {
-      result.push({ 'key': array[i][0], 'count': parseInt(array[i][2]) })
+      findResult.count += findNumber
     }
   }
   return result
@@ -52,4 +50,13 @@ function findObject(array, key) {
     }
   }
   return null
+}
+
+function getNum(str) {
+  if (str.length == 1) {
+    return 1
+  }
+  if (myIncludes(str, '-') || myIncludes(str, ':')) {
+    return parseInt(str[2])
+  }
 }
